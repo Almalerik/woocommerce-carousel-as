@@ -1,27 +1,17 @@
 <?php
 
 /**
- * Register all actions and filters for the plugin
- *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- */
-
-/**
  * Register all actions and filters for the plugin.
  *
  * Maintain a list of all hooks that are registered throughout
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    woocommerce-carousel-as
+ * @subpackage woocommerce-carousel-as/includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Loader {
+class Woocommerce_Carousel_AS_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

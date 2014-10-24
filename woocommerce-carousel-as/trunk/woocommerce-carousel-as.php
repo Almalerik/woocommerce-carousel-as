@@ -10,13 +10,13 @@
  *
  * @link              http://example.com
  * @since             1.0.0
- * @package           Plugin_Name
+ * @package           woocommerce-carousel-as
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress WooCommerce Carousel
+ * Plugin Name:       WooCommerce Carousel
  * Plugin URI:        http://almalerik.github.io/woocommerce-carousel-as
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress dashboard.
- * Version:           1.0.0
+ * Description:       A responsive customizable WooCommerce Carousel.
+ * Version:           1.0.0beta
  * Author:            Almalerik
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
@@ -61,10 +61,10 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-woocommerce-carousel-
  *
  * @since    1.0.0
  */
-function run_plugin_name() {
+function run_woocommerce_carousel_as() {
 
-	$plugin = new Plugin_Name();
+	$plugin = new Woocommerce_Carousel_AS();
 	$plugin->run();
 
 }
-run_plugin_name();
+run_woocommerce_carousel_as();

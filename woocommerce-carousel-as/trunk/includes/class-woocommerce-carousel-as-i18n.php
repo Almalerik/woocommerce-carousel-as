@@ -1,30 +1,17 @@
 <?php
 
 /**
- * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that its ready for translation.
- *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- */
-
-/**
  * Define the internationalization functionality.
  *
  * Loads and defines the internationalization files for this plugin
  * so that its ready for translation.
  *
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    woocommerce-carousel-as
+ * @subpackage woocommerce-carousel-as/includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_i18n {
+class Woocommerce_Carousel_AS_i18n {
 
 	/**
 	 * The domain specified for this plugin.

@@ -3,24 +3,14 @@
 /**
  * The dashboard-specific functionality of the plugin.
  *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
- */
-
-/**
- * The dashboard-specific functionality of the plugin.
- *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the dashboard-specific stylesheet and JavaScript.
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
+ * @package    woocommerce-carousel-as
+ * @subpackage woocommerce-carousel-as/admin
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Admin {
+class Woocommerce_Carousel_AS_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -51,6 +41,7 @@ class Plugin_Name_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+        error_log('2');
 
 	}
 
@@ -65,10 +56,10 @@ class Plugin_Name_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Admin_Loader as all of the hooks are defined
+		 * defined in Woocommerce_Carousel_AS_Admin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Plugin_Name_Admin_Loader will then create the relationship
+		 * The Woocommerce_Carousel_AS_Admin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -88,16 +79,38 @@ class Plugin_Name_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Admin_Loader as all of the hooks are defined
+		 * defined in Woocommerce_Carousel_AS_Admin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Plugin_Name_Admin_Loader will then create the relationship
+		 * The Woocommerce_Carousel_AS_Admin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woocommerce-carousel-as-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+    
+	/**
+	 * Return the plugin action links.  This will only be called if the plugin
+	 * is active.
+	 *
+	 * @since 1.0.0
+	 * @param array $actions associative array of action names to anchor tags
+	 * @return array associative array of plugin action links
+	 */
+	public function add_plugin_action_links( $actions ) {
+    
+        error_log("asdasdsadsadad");
+
+		$custom_actions = array(
+			'configure' => sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=wc-settings&tab=customizer&section=shop_loop' ), __( 'Configure', 'woocommerce-customizer' ) ),
+			'faq'       => sprintf( '<a href="%s">%s</a>', 'http://wordpress.org/plugins/woocommerce-customizer/faq/', __( 'FAQ', 'woocommerce-customizer' ) ),
+			'support'   => sprintf( '<a href="%s">%s</a>', 'http://wordpress.org/support/plugin/woocommerce-customizer', __( 'Support', 'woocommerce-customizer' ) ),
+		);
+
+		// add the links to the front of the actions list
+		return array_merge( $custom_actions, $actions );
 	}
 
 }
