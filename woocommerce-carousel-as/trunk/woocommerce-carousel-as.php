@@ -41,10 +41,10 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-woocommerce-carousel-
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-woocommerce-carousel-as-deactivator.php';
 
 /** This action is documented in includes/class-woocommerce-carousel-as-activator.php */
-register_activation_hook( __FILE__, array( 'Plugin_Name_Activator', 'activate' ) );
+register_activation_hook( __FILE__, array( 'Woocommerce_Carousel_AS_Activator', 'activate' ) );
 
 /** This action is documented in includes/class-woocommerce-carousel-as-deactivator.php */
-register_deactivation_hook( __FILE__, array( 'Plugin_Name_Deactivator', 'deactivate' ) );
+register_deactivation_hook( __FILE__, array( 'Woocommerce_Carousel_AS_Deactivator', 'deactivate' ) );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -63,7 +63,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-woocommerce-carousel-
  */
 function run_woocommerce_carousel_as() {
 
-	$plugin = new Woocommerce_Carousel_AS();
+	$plugin = new Woocommerce_Carousel_AS(plugin_basename(__FILE__));
 	$plugin->run();
 
 }

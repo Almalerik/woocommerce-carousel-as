@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Carousel AS\n"
-"POT-Creation-Date: 2014-10-25 18:11+0100\n"
-"PO-Revision-Date: 2014-10-25 18:12+0100\n"
+"POT-Creation-Date: 2014-10-25 19:10+0100\n"
+"PO-Revision-Date: 2014-10-25 19:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -14,7 +14,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_x\n"
-"X-Poedit-SearchPath-0: ../includes\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/class-woocommerce-carousel-as-admin.php:105
+msgid "Add Carousel"
+msgstr "Aggiungi Carousel"
+
+#: ../admin/class-woocommerce-carousel-as-admin.php:106
+msgid "Support"
+msgstr "Supporto"
 
 #: ../includes/class-woocommerce-carousel-as.php:224
 msgid "Woo Carousels"
@@ -30,7 +38,7 @@ msgstr "Aggiungi Nuovo"
 
 #: ../includes/class-woocommerce-carousel-as.php:227
 msgid "Add New Carousel"
-msgstr ""
+msgstr "Aggiungi Nuovo Carousel"
 
 #: ../includes/class-woocommerce-carousel-as.php:228
 msgid "Edit Carousel"
@@ -38,19 +46,19 @@ msgstr "Modifica Carousel"
 
 #: ../includes/class-woocommerce-carousel-as.php:229
 msgid "New Carousel"
-msgstr ""
+msgstr "Nuovo Carousel"
 
 #: ../includes/class-woocommerce-carousel-as.php:230
 msgid "All Carousels"
-msgstr ""
+msgstr "Tutti i Carousels"
 
 #: ../includes/class-woocommerce-carousel-as.php:231
 msgid "View Carousel"
-msgstr ""
+msgstr "Visualizza Carousel"
 
 #: ../includes/class-woocommerce-carousel-as.php:232
 msgid "Search Carousels"
-msgstr ""
+msgstr "Ricerca Carousels"
 
 #: ../includes/class-woocommerce-carousel-as.php:233
 msgid "No carousels found"

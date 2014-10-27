@@ -45,6 +45,15 @@ class Woocommerce_Carousel_AS {
 	protected $version;
 
 	/**
+	 * The base name plugin file.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_basename    The base name plugin file.
+	 */
+	protected $plugin_basename;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -53,10 +62,11 @@ class Woocommerce_Carousel_AS {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct( $plugin_basename ) {
 
 		$this->plugin_name = 'woocommerce-carousel-as';
 		$this->version = '1.0.0';
+		$this->plugin_basename = $plugin_basename;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -101,6 +111,11 @@ class Woocommerce_Carousel_AS {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woocommerce-carousel-as-admin.php';
 
 		/**
+		 * The class responsible for defining the carousel object.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-carousel.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -142,7 +157,9 @@ class Woocommerce_Carousel_AS {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         
-        $this->loader->add_filter( 'plugin_action_links_woocommerce-carousel-as/woocommerce-carousel-as.php' , $plugin_admin, 'add_plugin_action_links' );
+        $this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename , $plugin_admin, 'add_plugin_action_links' );
+
+		$this->loader->add_action( 'init', $plugin_admin, 'woocommerce_carousel_as_type', 0 );
 
 	}
 
@@ -201,5 +218,4 @@ class Woocommerce_Carousel_AS {
 	public function get_version() {
 		return $this->version;
 	}
-
 }
