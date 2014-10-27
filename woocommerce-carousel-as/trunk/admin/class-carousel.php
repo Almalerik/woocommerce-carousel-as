@@ -53,7 +53,7 @@ class Carousel {
 			                                // Object containing responsive options. Can be set to false to remove responsive capabilities.
 			"woocas_responsive" => array(
 				1024 => array(
-					items => 5
+					'items' => 5
 					)
 				)
 	);
@@ -119,28 +119,31 @@ class Carousel {
 	 * @access public
 	 */
 	public static function loadByID($plugin_name, $post_id) {
-		$instance = new self ();
+		$instance = new self();
 		
 		$instance->plugin_name = $plugin_name;
 		
-		$carousel_fields = get_post_meta ( $post_id, "woocas_data", false )[0];
+		$carousel_fields = get_post_meta ( $post_id, "woocas_data", false );
 
-		foreach ( $carousel_fields as $attribute_name => $value ) {
-			$instance->attrs_array [$attribute_name] = $value;
-			//Prepare here js carousel arg excluding default value
-			if ($attribute_name != "woocas_responsive") {
-				array_push ( $instance->woocas_js_arg, str_replace ( "woocas_", "", $attribute_name ) . ": " . $carousel_fields [$attribute_name] );
-			} else {
-				$width_array = array();
-				foreach ( $carousel_fields [$attribute_name] as $width => $responsive_attr ) {
-					$attr_array = array();
-					foreach ( $carousel_fields [$attribute_name] [$width] as $attr => $attr_val ) {
-						$attr_array[] = str_replace ("'","",str_replace ( "woocas_", "", $attr )) . " : " . $attr_val ;
+		if (sizeof($carousel_fields) > 0 ) {
+			$carousel_fields = $carousel_fields[0];
+			foreach ( $carousel_fields as $attribute_name => $value ) {
+				$instance->attrs_array [$attribute_name] = $value;
+				//Prepare here js carousel arg excluding default value
+				if ($attribute_name != "woocas_responsive") {
+					array_push ( $instance->woocas_js_arg, str_replace ( "woocas_", "", $attribute_name ) . ": " . $carousel_fields [$attribute_name] );
+				} else {
+					$width_array = array();
+					foreach ( $carousel_fields [$attribute_name] as $width => $responsive_attr ) {
+						$attr_array = array();
+						foreach ( $carousel_fields [$attribute_name] [$width] as $attr => $attr_val ) {
+							$attr_array[] = str_replace ("'","",str_replace ( "woocas_", "", $attr )) . " : " . $attr_val ;
+						}
+						$width_array[] = $width . " : {" . PHP_EOL . implode(",".PHP_EOL , $attr_array) . "}";
 					}
-					$width_array[] = $width . " : {" . PHP_EOL . implode(",".PHP_EOL , $attr_array) . "}";
+					$responsive .= "responsive : {" . PHP_EOL . implode(",".PHP_EOL , $width_array) ."}" . PHP_EOL;
+					array_push ( $instance->woocas_js_arg, $responsive );
 				}
-				$responsive .= "responsive : {" . PHP_EOL . implode(",".PHP_EOL , $width_array) ."}" . PHP_EOL;
-				array_push ( $instance->woocas_js_arg, $responsive );
 			}
 		}
 		return $instance;
@@ -156,70 +159,70 @@ class Carousel {
 	public function get_label($attribute) {
 		switch ($attribute) {
 			case "woocas_items" :
-				return __ ( "woocas_items_label", $this->plugin_name );
+				return __( "woocas_items_label", $this->plugin_name );
 				break;
 			case "woocas_margin" :
-				return __ ( "woocas_margin_label", $this->plugin_name );
+				return __( "woocas_margin_label", $this->plugin_name );
 				break;
 			case "woocas_loop" :
-				return __ ( "woocas_loop_label", $this->plugin_name );
+				return __( "woocas_loop_label", $this->plugin_name );
 				break;
 			case "woocas_center" :
-				return __ ( "woocas_center_label", $this->plugin_name );
+				return __( "woocas_center_label", $this->plugin_name );
 				break;
 			case "woocas_mouseDrag" :
-				return __ ( "woocas_mouseDrag_label", $this->plugin_name );
+				return __( "woocas_mouseDrag_label", $this->plugin_name );
 				break;
 			case "woocas_touchDrag" :
-				return __ ( "woocas_touchDrag_label", $this->plugin_name );
+				return __( "woocas_touchDrag_label", $this->plugin_name );
 				break;
 			case "woocas_pullDrag" :
-				return __ ( "woocas_pullDrag_label", $this->plugin_name );
+				return __( "woocas_pullDrag_label", $this->plugin_name );
 				break;
 			case "woocas_freeDrag" :
-				return __ ( "woocas_freeDrag_label", $this->plugin_name );
+				return __( "woocas_freeDrag_label", $this->plugin_name );
 				break;
 			case "woocas_stagePadding" :
-				return __ ( "woocas_stagePadding_label", $this->plugin_name );
+				return __( "woocas_stagePadding_label", $this->plugin_name );
 				break;
 			case "woocas_merge" :
-				return __ ( "woocas_merge_label", $this->plugin_name );
+				return __( "woocas_merge_label", $this->plugin_name );
 				break;
 			case "woocas_mergeFit" :
-				return __ ( "woocas_mergeFit_label", $this->plugin_name );
+				return __( "woocas_mergeFit_label", $this->plugin_name );
 				break;
 			case "woocas_autoWidth" :
-				return __ ( "woocas_autoWidth_label", $this->plugin_name );
+				return __( "woocas_autoWidth_label", $this->plugin_name );
 				break;
 			case "woocas_startPosition" :
-				return __ ( "woocas_startPosition_label", $this->plugin_name );
+				return __( "woocas_startPosition_label", $this->plugin_name );
 				break;
 			case "woocas_nav" :
-				return __ ( "woocas_nav_label", $this->plugin_name );
+				return __( "woocas_nav_label", $this->plugin_name );
 				break;
 			case "woocas_navRewind" :
-				return __ ( "woocas_navRewind_label", $this->plugin_name );
+				return __( "woocas_navRewind_label", $this->plugin_name );
 				break;
 			case "woocas_navText_prev" :
-				return __ ( "woocas_navText_prev_label", $this->plugin_name );
+				return __( "woocas_navText_prev_label", $this->plugin_name );
 				break;
 			case "woocas_navText_next" :
-				return __ ( "woocas_navText_next_label", $this->plugin_name );
+				return __( "woocas_navText_next_label", $this->plugin_name );
 				break;
 			case "woocas_slideBy" :
-				return __ ( "woocas_slideBy_label", $this->plugin_name );
+				return __( "woocas_slideBy_label", $this->plugin_name );
 				break;
 			case "woocas_dots" :
-				return __ ( "woocas_dots_label", $this->plugin_name );
+				return __( "woocas_dots_label", $this->plugin_name );
 				break;
 			case "woocas_autoplay" :
-				return __ ( "woocas_autoplay_label", $this->plugin_name );
+				return __( "woocas_autoplay_label", $this->plugin_name );
 				break;
 			case "woocas_autoplayTimeout" :
-				return __ ( "woocas_autoplayTimeout_label", $this->plugin_name );
+				return __( "woocas_autoplayTimeout_label", $this->plugin_name );
 				break;
 			case "woocas_autoplayHoverPause" :
-				return __ ( "woocas_autoplayHoverPause_label", $this->plugin_name );
+				return __( "woocas_autoplayHoverPause_label", $this->plugin_name );
 				break;
 			default :
 				return $attribute;
@@ -228,32 +231,32 @@ class Carousel {
 
 	public function edit_form() {
 		?>
-	<div id="owlc-admin-tab">
+	<div id="woocas-admin-tab">
 		<h2 class="nav-tab-wrapper">
-			<a href="#owlc-responsice-tab" class="nav-tab nav-tab-active">Responsive</a>
+			<a href="#woocas-responsice-tab" class="nav-tab nav-tab-active">Responsive</a>
 			<a href="#general" class="nav-tab">Tab #2</a>
 			<a href="#frag2" class="nav-tab">Tab #3</a>
 		</h2>
-		<div id="owlc-responsice-tab">
-			<table class="form-table owlc-responsice-table">
+		<div id="woocas-responsice-tab">
+			<table class="form-table woocas-responsice-table">
 				<tbody>
 					<tr>
 						<td>
 							<label>Options applicate to resolution upper :</label>
-							<input type="text" class="small-text" id="owlc-add-breakpoint-value" value="" />
+							<input type="text" class="small-text" id="woocas-add-breakpoint-value" value="" />
 							px
-							<input type="button" class="button button-small" value="Add breakpoint" id="owlc-add-breakpoint" />
+							<input type="button" class="button button-small" value="Add breakpoint" id="woocas-add-breakpoint" />
 						</td>
 						<td></td>
 					</tr>
 				</tbody>
 			</table>
-			<div id="owlc-responsive-base" style="display: none;">
+			<div id="woocas-responsive-base" style="display: none;">
 				<h3>
 					Resolution >=
 					<span></span>
 					px
-					<a href="#" class="dashicons dashicons-no owlc-responsive-delete"></a>
+					<a href="#" class="dashicons dashicons-no woocas-responsive-delete"></a>
 				</h3>
 				<div>
 					<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="" />
@@ -262,21 +265,21 @@ class Carousel {
 	              <option value="<?php echo $value ?>"><?php echo $this->get_label($value) ?></option>
 	            <?php }?>
 	            </select>
-					<a href="#" class="owlc-responsive-add-attribute ">Add</a>
+					<a href="#" class="woocas-responsive-add-attribute ">Add</a>
 					<table class="form-table">
 						<tbody>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<div id="owlc-responsive-accordion">
-				<div id="owlc-responsive-1024" style="display: block;">
+			<div id="woocas-responsive-accordion">
+				<div id="woocas-responsive-1024" style="display: block;">
 					<h3>
 						<span></span>
 						Resolution &gt;=
 						<span>1024</span>
 						px
-						<a href="1024" class="dashicons dashicons-no owlc-responsive-delete"></a>
+						<a href="1024" class="dashicons dashicons-no woocas-responsive-delete"></a>
 					</h3>
 					<div>
 						<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="1024">
@@ -314,7 +317,7 @@ class Carousel {
 							<option value="woocas_callbacks">woocas_callbacks</option>
 							<option value="woocas_info">woocas_info</option>
 						</select>
-						<a href="1024" class="owlc-responsive-add-attribute ">Add</a>
+						<a href="1024" class="woocas-responsive-add-attribute ">Add</a>
 						<table class="form-table">
 							<tbody>
 								<tr class="woocas_items">

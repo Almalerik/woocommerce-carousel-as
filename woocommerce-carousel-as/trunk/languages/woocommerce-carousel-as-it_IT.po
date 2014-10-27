@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Carousel AS\n"
-"POT-Creation-Date: 2014-10-25 19:10+0100\n"
-"PO-Revision-Date: 2014-10-25 19:10+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2014-10-27 07:01+0100\n"
+"PO-Revision-Date: 2014-10-27 07:04+0100\n"
+"Last-Translator: Almalerik <almalerik@gmail.com>\n"
 "Language-Team: \n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,94 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_x\n"
 "X-Poedit-SearchPath-0: ..\n"
 
+#: ../admin/class-carousel.php:162
+msgid "woocas_items_label"
+msgstr "Oggetti"
+
+#: ../admin/class-carousel.php:165
+msgid "woocas_margin_label"
+msgstr "Margine destro"
+
+#: ../admin/class-carousel.php:168
+msgid "woocas_loop_label"
+msgstr "Loop"
+
+#: ../admin/class-carousel.php:171
+msgid "woocas_center_label"
+msgstr "Centro"
+
+#: ../admin/class-carousel.php:174
+msgid "woocas_mouseDrag_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:177
+msgid "woocas_touchDrag_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:180
+msgid "woocas_pullDrag_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:183
+msgid "woocas_freeDrag_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:186
+msgid "woocas_stagePadding_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:189
+msgid "woocas_merge_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:192
+msgid "woocas_mergeFit_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:195
+msgid "woocas_autoWidth_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:198
+msgid "woocas_startPosition_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:201
+msgid "woocas_nav_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:204
+msgid "woocas_navRewind_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:207
+msgid "woocas_navText_prev_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:210
+msgid "woocas_navText_next_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:213
+msgid "woocas_slideBy_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:216
+msgid "woocas_dots_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:219
+msgid "woocas_autoplay_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:222
+msgid "woocas_autoplayTimeout_label"
+msgstr ""
+
+#: ../admin/class-carousel.php:225
+msgid "woocas_autoplayHoverPause_label"
+msgstr ""
+
 #: ../admin/class-woocommerce-carousel-as-admin.php:105
 msgid "Add Carousel"
 msgstr "Aggiungi Carousel"
@@ -24,50 +112,56 @@ msgstr "Aggiungi Carousel"
 msgid "Support"
 msgstr "Supporto"
 
-#: ../includes/class-woocommerce-carousel-as.php:224
+#: ../admin/class-woocommerce-carousel-as-admin.php:120
 msgid "Woo Carousels"
 msgstr ""
 
-#: ../includes/class-woocommerce-carousel-as.php:225
+#: ../admin/class-woocommerce-carousel-as-admin.php:121
 msgid "Woo Carousel"
 msgstr ""
 
-#: ../includes/class-woocommerce-carousel-as.php:226
-msgid "Add New"
+#: ../admin/class-woocommerce-carousel-as-admin.php:122
+#, fuzzy
+msgid "Add"
 msgstr "Aggiungi Nuovo"
 
-#: ../includes/class-woocommerce-carousel-as.php:227
+#: ../admin/class-woocommerce-carousel-as-admin.php:123
 msgid "Add New Carousel"
 msgstr "Aggiungi Nuovo Carousel"
 
-#: ../includes/class-woocommerce-carousel-as.php:228
+#: ../admin/class-woocommerce-carousel-as-admin.php:124
 msgid "Edit Carousel"
 msgstr "Modifica Carousel"
 
-#: ../includes/class-woocommerce-carousel-as.php:229
+#: ../admin/class-woocommerce-carousel-as-admin.php:125
 msgid "New Carousel"
 msgstr "Nuovo Carousel"
 
-#: ../includes/class-woocommerce-carousel-as.php:230
+#: ../admin/class-woocommerce-carousel-as-admin.php:126
 msgid "All Carousels"
 msgstr "Tutti i Carousels"
 
-#: ../includes/class-woocommerce-carousel-as.php:231
+#: ../admin/class-woocommerce-carousel-as-admin.php:127
 msgid "View Carousel"
 msgstr "Visualizza Carousel"
 
-#: ../includes/class-woocommerce-carousel-as.php:232
+#: ../admin/class-woocommerce-carousel-as-admin.php:128
 msgid "Search Carousels"
 msgstr "Ricerca Carousels"
 
-#: ../includes/class-woocommerce-carousel-as.php:233
+#: ../admin/class-woocommerce-carousel-as-admin.php:129
 msgid "No carousels found"
 msgstr "Nessun carosello trovato\t"
 
-#: ../includes/class-woocommerce-carousel-as.php:234
+#: ../admin/class-woocommerce-carousel-as-admin.php:130
 msgid "No carousels found in the Trash"
 msgstr ""
 
-#: ../includes/class-woocommerce-carousel-as.php:240
+#: ../admin/class-woocommerce-carousel-as-admin.php:136
 msgid "Holds WooCommerce Carousels"
 msgstr ""
+
+#: ../admin/class-woocommerce-carousel-as-admin.php:146
+#, fuzzy
+msgid "Carousel Settings"
+msgstr "Tutti i Carousels"

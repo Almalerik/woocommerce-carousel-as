@@ -160,6 +160,7 @@ class Woocommerce_Carousel_AS {
         $this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename , $plugin_admin, 'add_plugin_action_links' );
 
 		$this->loader->add_action( 'init', $plugin_admin, 'woocommerce_carousel_as_type', 0 );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'carousel_meta_box' );
 
 	}
 
