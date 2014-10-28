@@ -3,6 +3,10 @@
  * included in this file.
  */
 
+ .width-50 {
+ 	width: 50px;
+ }
+
 #woocas-responsive-accordion h3 {
 	background: #dedede;
 	font-weight: bold;
@@ -15,6 +19,19 @@
 	padding: 0;
 	font-size: 1.4em;
 }
+
+#woocas-admin-tab .form-table tr {
+	border-bottom: 1px solid #dedede;
+}
+
+#woocas-admin-tab .form-table th {
+	padding: 10px 10px 10px 0;
+}
+
+#woocas-admin-tab .form-table td {
+	padding: 5px 10px;
+}
+
 
 /*
  * jQuery UI CSS Framework 1.8.16

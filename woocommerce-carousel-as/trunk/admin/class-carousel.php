@@ -52,8 +52,13 @@ class Carousel {
 			"woocas_autoplayHoverPause" => 0, // Pause on mouse hover.
 			                                // Object containing responsive options. Can be set to false to remove responsive capabilities.
 			"woocas_responsive" => array(
+				240 => array(
+					'items' => 2,
+					'loop' => true
+					),
 				1024 => array(
-					'items' => 5
+					'items' => 6,
+					'loop' => true
 					)
 				)
 	);
@@ -260,7 +265,7 @@ class Carousel {
 				</h3>
 				<div>
 					<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="" />
-					Add option: <select>
+					Add option: <select class="woocas-responsive-base-attributes-select">
 	            <?php foreach ( $this->woocas_responsive_attr_avaible as $index => $value ) { ?>
 	              <option value="<?php echo $value ?>"><?php echo $this->get_label($value) ?></option>
 	            <?php }?>
@@ -273,69 +278,38 @@ class Carousel {
 				</div>
 			</div>
 			<div id="woocas-responsive-accordion">
-				<div id="woocas-responsive-1024" style="display: block;">
+			<?php foreach ( $this->attrs_array["woocas_responsive"] as $index => $value ) { ?>
+				<div id="woocas-responsive-<?php echo $index ?>">
 					<h3>
-						<span></span>
 						Resolution &gt;=
-						<span>1024</span>
+						<span><?php echo $index ?></span>
 						px
-						<a href="1024" class="dashicons dashicons-no woocas-responsive-delete"></a>
+						<a href="<?php echo $index ?>" class="dashicons dashicons-no woocas-responsive-delete"></a>
 					</h3>
 					<div>
-						<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="1024">
-						Add option: <select>
-
-							<option value="woocas_loop">woocas_loop_label</option>
-							<option value="woocas_center">woocas_center_label</option>
-							<option value="woocas_mouseDrag">woocas_mouseDrag_label</option>
-							<option value="woocas_touchDrag">woocas_touchDrag_label</option>
-							<option value="woocas_pullDrag">woocas_pullDrag_label</option>
-							<option value="woocas_freeDrag">woocas_freeDrag_label</option>
-							<option value="woocas_margin">woocas_margin_label</option>
-							<option value="woocas_stagePadding">woocas_stagePadding_label</option>
-							<option value="woocas_merge">woocas_merge_label</option>
-							<option value="woocas_mergeFit">woocas_mergeFit_label</option>
-							<option value="woocas_autoWidth">woocas_autoWidth_label</option>
-							<option value="woocas_autoHeight">woocas_autoHeight</option>
-							<option value="woocas_nav">woocas_nav_label</option>
-							<option value="woocas_navRewind">woocas_navRewind_label</option>
-							<option value="woocas_slideBy">woocas_slideBy_label</option>
-							<option value="woocas_dots">woocas_dots_label</option>
-							<option value="woocas_dotsEach">woocas_dotsEach</option>
-							<option value="woocas_autoplay">woocas_autoplay_label</option>
-							<option value="woocas_autoplayTimeout">woocas_autoplayTimeout_label</option>
-							<option value="woocas_smartSpeed">woocas_smartSpeed</option>
-							<option value="woocas_fluidSpeed">woocas_fluidSpeed</option>
-							<option value="woocas_autoplaySpeed">woocas_autoplaySpeed</option>
-							<option value="woocas_navSpeed">woocas_navSpeed</option>
-							<option value="woocas_dotsSpeed">woocas_dotsSpeed</option>
-							<option value="woocas_dragEndSpeed">woocas_dragEndSpeed</option>
-							<option value="woocas_responsiveRefreshRate">woocas_responsiveRefreshRate</option>
-							<option value="woocas_animateOut">woocas_animateOut</option>
-							<option value="woocas_animateIn">woocas_animateIn</option>
-							<option value="woocas_fallbackEasing">woocas_fallbackEasing</option>
-							<option value="woocas_callbacks">woocas_callbacks</option>
-							<option value="woocas_info">woocas_info</option>
-						</select>
-						<a href="1024" class="woocas-responsive-add-attribute ">Add</a>
+						<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="<?php echo $index ?>">
+						Add option: <select class="woocas-responsive-attributes-select"></select>
+						<a href="<?php echo $index ?>" class="woocas-responsive-add-attribute ">Add</a>
 						<table class="form-table">
 							<tbody>
-								<tr class="woocas_items">
+								<?php foreach ( $value as $index_attr => $value_attr ) { ?>
+								<tr class="<?php echo "woocas_".$index_attr ?>">
 									<th scope="row">
-										<label for="woocas_items">Items:</label>
+										<label for="<?php echo "woocas_".$index_attr ?>"><?php echo $index_attr ?>:</label>
 									</th>
 									<td>
 										<legend class="screen-reader-text">
 											<span>Items :</span>
 										</legend>
-										<input type="text" class="" name="responsive[1024]['woocas_items']" value="3">
-										<span class="description">The number of items you want to see on the screen.</span>
+										<input type="text" class="" name="responsive[<?php echo $index ?>][<?php echo $index_attr ?>]" value="<?php echo $value_attr ?>">
 									</td>
 								</tr>
+								<?php }?>
 							</tbody>
 						</table>
 					</div>
 				</div>
+			<?php }?>
 			</div>
 
 		</div>
@@ -351,7 +325,7 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span><?php _e( 'Items' ) ?> :</span>
 							</legend>
-							<input type="text" class="" name="woocas_items" value="<?php echo $this->attrs_array['woocas_items'] ?>" />
+							<input type="text" class="width-50" name="woocas_items" value="<?php echo $this->attrs_array['woocas_items'] ?>" />
 							<span class="description"><?php _e( 'The number of items you want to see on the screen.' ) ?></span>
 						</td>
 					</tr>
@@ -363,11 +337,11 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span>><?php _e( 'Items Margin Right' ) ?>: </span>
 							</legend>
-							<input type="text" class="" name="woocas_margin" value="<?php echo $this->attrs_array['woocas_margin'] ?>" />
+							<input type="text" class="width-50" name="woocas_margin" value="<?php echo $this->attrs_array['woocas_margin'] ?>" />
 							<span class="description"><?php _e( 'Margin-right in px on item.' ) ?></span>
 						</td>
 					</tr>
-					<tr>
+					<tr class="woocas_loop">
 						<th scope="row">
 							<label for="woocas_loop"><?php _e( 'Loop' ) ?>: </label>
 						</th>
@@ -382,7 +356,7 @@ class Carousel {
 							<span class="description"><?php _e( 'Duplicate last and first items to get loop illusion.' )?></span>
 						</td>
 					</tr>
-					<tr>
+					<tr class="woocas_center">
 						<th scope="row">
 							<label for="woocas_center"><?php _e( 'Center' ) ?>: </label>
 						</th>
@@ -465,7 +439,7 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span><?php _e( 'Stage Padding' ) ?>: </span>
 							</legend>
-							<input type="text" class="" name="woocas_stagePadding" value="<?php echo $this->attrs_array['woocas_stagePadding'] ?>" />
+							<input type="text" class="width-50" name="woocas_stagePadding" value="<?php echo $this->attrs_array['woocas_stagePadding'] ?>" />
 							<span class="description"><?php _e( 'Padding left and right on stage (can see neighbours).' ) ?></span>
 						</td>
 					</tr>
@@ -492,7 +466,7 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span><?php _e( 'Start position' ) ?>: </span>
 							</legend>
-							<input type="text" class="" name="woocas_startPosition" value="<?php echo $this->attrs_array['woocas_startPosition'] ?>" />
+							<input type="text" class="width-50" name="woocas_startPosition" value="<?php echo $this->attrs_array['woocas_startPosition'] ?>" />
 							<span class="description"><?php _e( 'Item number to start' ) ?> </span>
 						</td>
 					</tr>
@@ -558,7 +532,7 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span><?php _e( 'Slide by' ) ?>: </span>
 							</legend>
-							<input type="text" class="woocas_slideBy" name="woocas_slideBy" value="<?php echo $this->attrs_array['woocas_slideBy'] ?>" />
+							<input type="text" class="width-50 woocas_slideBy" name="woocas_slideBy" value="<?php echo $this->attrs_array['woocas_slideBy'] ?>" />
 							<span class="description"><?php _e( 'Navigation slide by x. "Page" string can be set to slide by page.' ) ?> </span>
 						</td>
 					</tr>
@@ -598,7 +572,7 @@ class Carousel {
 							<legend class="screen-reader-text">
 								<span><?php _e( 'Autoplay interval timeout' ) ?>: </span>
 							</legend>
-							<input type="text" class="woocas_autoplayTimeout" name="woocas_autoplayTimeout" value="<?php echo $this->attrs_array['woocas_autoplayTimeout'] ?>" />
+							<input type="text" class="width-50 woocas_autoplayTimeout" name="woocas_autoplayTimeout" value="<?php echo $this->attrs_array['woocas_autoplayTimeout'] ?>" />
 							<span class="description"><?php _e( 'In milliseconds.' ) ?> </span>
 						</td>
 					</tr>

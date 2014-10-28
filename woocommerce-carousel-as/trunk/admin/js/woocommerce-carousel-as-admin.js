@@ -48,6 +48,30 @@
 
 		$("#woocas-responsive-accordion").accordion({ header: "h3", heightStyle: "content" });
 		
+
+		// Fix existing breakpoint
+		$("#woocas-responsive-accordion > div").each(function() {
+			// Fix attribute select
+			// Clone base select
+			var $cloneSelectAttribute = jQuery("#woocas-responsive-base .woocas-responsive-base-attributes-select").clone(true);
+			$cloneSelectAttribute.attr("class", "woocas-responsive-attributes-select");
+			// Remove attributes already added
+			$(this).find('.form-table tr').each(function() {
+				var attributeName = $(this).attr("class");
+				$cloneSelectAttribute.find('option[value="' + attributeName + '"]').remove();
+
+				var baseAttr = $('#general tr.' + attributeName).clone();
+				if (baseAttr.find('input').size() > 0 ) {
+					baseAttr.find('input').val($(this).find('input').val());
+				} else {
+					baseAttr.find('select').val($(this).find('input').val());
+				}
+				$(this).replaceWith(baseAttr);
+			});
+			// Replace empty
+			$(this).find(".woocas-responsive-attributes-select").replaceWith($cloneSelectAttribute);
+		});
+		
 		//Add new responsive breakpoint
 		$("#woocas-add-breakpoint").on('click', function() {
 			var breakpoint = $('#woocas-add-breakpoint-value').val(); //get responsive breakpoint to add
