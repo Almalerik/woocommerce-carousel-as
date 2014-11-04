@@ -47,7 +47,7 @@
 		});
 
 		$("#woocas-responsive-accordion").accordion({ header: "h3", heightStyle: "content" });
-		
+		$("#woocas_advance_options").accordion({ header: "h3", heightStyle: "content", collapsible: true, active: 2 });
 
 		// Fix existing breakpoint
 		$("#woocas-responsive-accordion > div").each(function() {
@@ -63,8 +63,10 @@
 				var baseAttr = $('#general tr.' + attributeName).clone();
 				if (baseAttr.find('input').size() > 0 ) {
 					baseAttr.find('input').val($(this).find('input').val());
+					baseAttr.find('input').attr("name", $(this).find('input').attr("name"));
 				} else {
 					baseAttr.find('select').val($(this).find('input').val());
+					baseAttr.find('select').attr("name", $(this).find('input').attr("name"));
 				}
 				$(this).replaceWith(baseAttr);
 			});
@@ -115,13 +117,55 @@
 			var breakpoint = jQuery(this).attr('href');
 			var $selectedAttr = jQuery(this).prev('select').find(":selected");
 			var $attribute = jQuery('#general tr.' + $selectedAttr.val()).clone()
-			$attribute.find('[name="'+$selectedAttr.val()+'"]').attr("name", "responsive[" + breakpoint+"]['"+$selectedAttr.val()+"']");
+			$attribute.find('[name="'+$selectedAttr.val()+'"]').attr("name", "responsive[" + breakpoint+"]['"+$selectedAttr.val().replace("woocas_", "")+"']");
 			$attribute.appendTo(jQuery(this).next());
 			jQuery("#woocas-responsive-accordion").accordion("refresh");
 			$selectedAttr.remove();
 		});
 
-	});
+		//WooCommerce Category filter multiselect
+		var availableTags = [];
+		$("#woocas_cat_filter option").each(function(){
+			availableTags.push($(this).val());
+		});
+		function split( val ) {
+			return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+			return split( term ).pop();
+		}
+
+		$( "#woocas_filter_categories" )
+		// don't navigate away from the field on tab when selecting an item
+			.bind( "keydown", function( event ) {
+				if ( event.keyCode === $.ui.keyCode.TAB &&
+					$( this ).autocomplete( "instance" ).menu.active ) {
+					event.preventDefault();
+					}
+			})
+			.autocomplete({
+				minLength: 0,
+				source: function( request, response ) {
+				// delegate back to autocomplete, but extract the last term
+					response( $.ui.autocomplete.filter(availableTags, extractLast( request.term ) ) );
+				},
+				focus: function() {
+					// prevent value inserted on focus
+					return false;
+				},
+				select: function( event, ui ) {
+					var terms = split( this.value );
+					// remove the current input
+					terms.pop();
+					// add the selected item
+					terms.push( ui.item.value );
+					// add placeholder to get the comma-and-space at the end
+					terms.push( "" );
+					this.value = terms.join( ", " );
+					return false;
+				}
+			});
+		});
 
 
 })(jQuery);

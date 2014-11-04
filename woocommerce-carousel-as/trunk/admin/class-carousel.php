@@ -30,35 +30,32 @@ class Carousel {
 	private $attrs_array = array (
 			"woocas_items" => 3, // The number of items you want to see on the screen.
 			"woocas_margin" => 10, // Margin-right(px) on item.
-			"woocas_loop" => 0, // Inifnity loop. Duplicate last and first items to get loop illusion.
-			"woocas_center" => 0, // Center item. Works well with even an odd number of items.
+			"woocas_loop" => true, // Inifnity loop. Duplicate last and first items to get loop illusion.
+			"woocas_center" => false, // Center item. Works well with even an odd number of items.
 			"woocas_mouseDrag" => true, // Mouse drag enabled.
 			"woocas_touchDrag" => true, // Touch drag enabled.
 			"woocas_pullDrag" => true, // Stage pull to edge.
-			"woocas_freeDrag" => 0, // Item pull to edge.
+			"woocas_freeDrag" => false, // Item pull to edge.
 			"woocas_stagePadding" => 0, // Padding left and right on stage (can see neighbours).
-			"woocas_merge" => 0, // Merge items. Looking for data-merge='{number}' inside item..
-			"woocas_mergeFit" => true, // Fit merged items if screen is smaller than items value.
 			"woocas_autoWidth" => 0, // Set non grid content. Try using width style on divs.
 			"woocas_startPosition" => 0, // Start position.
-			"woocas_nav" => 0, // Show next/prev buttons.
+			"woocas_nav" => false, // Show next/prev buttons.
 			"woocas_navRewind" => true, // Go to first/last.
 			"woocas_navText_prev" => "", // Prev buttons label.
 			"woocas_navText_next" => "", // Next buttons label.
-			"woocas_slideBy" => "1", // Navigation slide by x. 'page' string can be set to slide by page.
 			"woocas_dots" => true, // Show dots navigation.
-			"woocas_autoplay" => 0, // Autoplay.
+			"woocas_autoplay" => false, // Autoplay.
 			"woocas_autoplayTimeout" => 5000, // Autoplay interval timeout.
-			"woocas_autoplayHoverPause" => 0, // Pause on mouse hover.
+			"woocas_autoplayHoverPause" => false, // Pause on mouse hover.
 			                                // Object containing responsive options. Can be set to false to remove responsive capabilities.
 			"woocas_responsive" => array(
 				240 => array(
-					'items' => 2,
-					'loop' => true
+					"woocas_items" => 2,
+					"woocas_loop" => true
 					),
 				1024 => array(
-					'items' => 6,
-					'loop' => true
+					"woocas_items" => 6,
+					"woocas_loop" => true
 					)
 				)
 	);
@@ -89,30 +86,53 @@ class Carousel {
 			"woocas_freeDrag",
 			"woocas_margin",
 			"woocas_stagePadding",
-			"woocas_merge",
-			"woocas_mergeFit",
 			"woocas_autoWidth",
 			"woocas_autoHeight",
 			"woocas_nav",
 			"woocas_navRewind",
 			"woocas_slideBy",
 			"woocas_dots",
-			"woocas_dotsEach",
 			"woocas_autoplay",
 			"woocas_autoplayTimeout",
-			"woocas_smartSpeed",
-			"woocas_fluidSpeed",
 			"woocas_autoplaySpeed",
-			"woocas_navSpeed",
-			"woocas_dotsSpeed",
-			"woocas_dragEndSpeed",
-			"woocas_responsiveRefreshRate",
 			"woocas_animateOut",
 			"woocas_animateIn",
 			"woocas_fallbackEasing",
 			"woocas_callbacks",
 			"woocas_info" 
 	);
+
+	private $woocas_standard_options = array (
+			"woocas_items", // The number of items you want to see on the screen.
+			"woocas_margin", // Margin-right(px) on item.
+			"woocas_loop", // Inifnity loop. Duplicate last and first items to get loop illusion.
+			"woocas_center", // Center item. Works well with even an odd number of items.
+			"woocas_stagePadding", // Padding left and right on stage (can see neighbours).
+			"woocas_autoWidth", // Set non grid content. Try using width style on divs.
+			"woocas_nav", // Show next/prev buttons.
+			"woocas_dots", // Show dots navigation.
+			"woocas_autoplay", // Autoplay.
+			"woocas_autoplayTimeout", // Autoplay interval timeout.
+			"woocas_autoplayHoverPause" // Pause on mouse hover.
+	);
+
+	private $woocas_advanced_options = array (
+			"woocas_mouseDrag", // Mouse drag enabled.
+			"woocas_touchDrag", // Touch drag enabled.
+			"woocas_pullDrag", // Stage pull to edge.
+			"woocas_freeDrag", // Item pull to edge.
+			"woocas_startPosition", // Start position.
+			"woocas_navText_prev", // Prev buttons label.
+			"woocas_navText_next", // Next buttons label.
+			"woocas_navRewind", // Go to first/last.
+	);
+
+	private $woocas_filter_categories = "";
+	private $woocas_filter_show = "";
+	private $woocas_filter_orderby = "date";
+	private $woocas_filter_order = "desc";
+	private $woocas_filter_hide_free = "0";
+	private $woocas_filter_show_hidden = "0";
 
 	private function __construct() {
 	}
@@ -127,13 +147,30 @@ class Carousel {
 		$instance = new self();
 		
 		$instance->plugin_name = $plugin_name;
+
+		$instance->woocas_filter_categories = get_post_meta ( $post_id, "woocas_filter_categories", true );
+		$instance->woocas_filter_show = get_post_meta ( $post_id, "woocas_filter_show", true );
+		$instance->woocas_filter_hide_free = get_post_meta ( $post_id, "woocas_filter_hide_free", true );
+		$instance->woocas_filter_show_hidden = get_post_meta ( $post_id, "woocas_filter_show_hidden", true );
+		$instance->woocas_filter_orderby = get_post_meta ( $post_id, "woocas_filter_orderby", true );
+		$instance->woocas_filter_order = get_post_meta ( $post_id, "woocas_filter_order", true );
 		
 		$carousel_fields = get_post_meta ( $post_id, "woocas_data", false );
 
 		if (sizeof($carousel_fields) > 0 ) {
 			$carousel_fields = $carousel_fields[0];
 			foreach ( $carousel_fields as $attribute_name => $value ) {
-				$instance->attrs_array [$attribute_name] = $value;
+				//For bool attr set true or false
+				if (is_bool($instance->attrs_array [$attribute_name])) {
+					if ($value === "1") {
+						$instance->attrs_array [$attribute_name] = true;
+					} else {
+						$instance->attrs_array [$attribute_name] = false;
+					}
+
+				} else {
+					$instance->attrs_array [$attribute_name] = $value;
+				}
 				//Prepare here js carousel arg excluding default value
 				if ($attribute_name != "woocas_responsive") {
 					array_push ( $instance->woocas_js_arg, str_replace ( "woocas_", "", $attribute_name ) . ": " . $carousel_fields [$attribute_name] );
@@ -146,7 +183,7 @@ class Carousel {
 						}
 						$width_array[] = $width . " : {" . PHP_EOL . implode(",".PHP_EOL , $attr_array) . "}";
 					}
-					$responsive .= "responsive : {" . PHP_EOL . implode(",".PHP_EOL , $width_array) ."}" . PHP_EOL;
+					$responsive = "responsive : {" . PHP_EOL . implode(",".PHP_EOL , $width_array) ."}" . PHP_EOL;
 					array_push ( $instance->woocas_js_arg, $responsive );
 				}
 			}
@@ -164,70 +201,131 @@ class Carousel {
 	public function get_label($attribute) {
 		switch ($attribute) {
 			case "woocas_items" :
-				return __( "woocas_items_label", $this->plugin_name );
+				return __( "Items number", $this->plugin_name );
 				break;
 			case "woocas_margin" :
-				return __( "woocas_margin_label", $this->plugin_name );
+				return __( "Margin right", $this->plugin_name );
 				break;
 			case "woocas_loop" :
-				return __( "woocas_loop_label", $this->plugin_name );
+				return __( "Infinity loop", $this->plugin_name );
 				break;
 			case "woocas_center" :
-				return __( "woocas_center_label", $this->plugin_name );
+				return __( "Center item", $this->plugin_name );
 				break;
 			case "woocas_mouseDrag" :
-				return __( "woocas_mouseDrag_label", $this->plugin_name );
+				return __( "Mouse drag", $this->plugin_name );
 				break;
 			case "woocas_touchDrag" :
-				return __( "woocas_touchDrag_label", $this->plugin_name );
+				return __( "Touch drag", $this->plugin_name );
 				break;
 			case "woocas_pullDrag" :
-				return __( "woocas_pullDrag_label", $this->plugin_name );
+				return __( "Pull drag", $this->plugin_name );
 				break;
 			case "woocas_freeDrag" :
-				return __( "woocas_freeDrag_label", $this->plugin_name );
+				return __( "Free drag", $this->plugin_name );
 				break;
 			case "woocas_stagePadding" :
-				return __( "woocas_stagePadding_label", $this->plugin_name );
-				break;
-			case "woocas_merge" :
-				return __( "woocas_merge_label", $this->plugin_name );
-				break;
-			case "woocas_mergeFit" :
-				return __( "woocas_mergeFit_label", $this->plugin_name );
+				return __( "Stage padding", $this->plugin_name );
 				break;
 			case "woocas_autoWidth" :
-				return __( "woocas_autoWidth_label", $this->plugin_name );
+				return __( "Auto width", $this->plugin_name );
 				break;
 			case "woocas_startPosition" :
-				return __( "woocas_startPosition_label", $this->plugin_name );
+				return __( "Start position", $this->plugin_name );
 				break;
 			case "woocas_nav" :
-				return __( "woocas_nav_label", $this->plugin_name );
+				return __( "Nav", $this->plugin_name );
 				break;
 			case "woocas_navRewind" :
-				return __( "woocas_navRewind_label", $this->plugin_name );
+				return __( "Nav rewind", $this->plugin_name );
 				break;
 			case "woocas_navText_prev" :
-				return __( "woocas_navText_prev_label", $this->plugin_name );
+				return __( "Nav previous text button", $this->plugin_name );
 				break;
 			case "woocas_navText_next" :
-				return __( "woocas_navText_next_label", $this->plugin_name );
+				return __( "Nav next text button", $this->plugin_name );
 				break;
 			case "woocas_slideBy" :
-				return __( "woocas_slideBy_label", $this->plugin_name );
+				return __( "Slide By", $this->plugin_name );
 				break;
 			case "woocas_dots" :
-				return __( "woocas_dots_label", $this->plugin_name );
+				return __( "Dots navigation", $this->plugin_name );
 				break;
 			case "woocas_autoplay" :
-				return __( "woocas_autoplay_label", $this->plugin_name );
+				return __( "Autoplay", $this->plugin_name );
 				break;
 			case "woocas_autoplayTimeout" :
-				return __( "woocas_autoplayTimeout_label", $this->plugin_name );
+				return __( "Autoplay timeout", $this->plugin_name );
 				break;
 			case "woocas_autoplayHoverPause" :
-				return __( "woocas_autoplayHoverPause_label", $this->plugin_name );
+				return __( "Autoplay pause on over", $this->plugin_name );
+				break;
+			default :
+				return $attribute;
+		}
+	}
+
+	public function get_description($attribute) {
+		switch ($attribute) {
+			case "woocas_items" :
+				return __( "The number of items you want to see on the screen.", $this->plugin_name );
+				break;
+			case "woocas_margin" :
+				return __( "Margin right on every items.", $this->plugin_name );
+				break;
+			case "woocas_loop" :
+				return __( "Duplicate last and first items to get loop illusion.", $this->plugin_name );
+				break;
+			case "woocas_center" :
+				return __( "Works well with even an odd number of items.", $this->plugin_name );
+				break;
+			case "woocas_mouseDrag" :
+				return __( "Mouse drag enabled.", $this->plugin_name );
+				break;
+			case "woocas_touchDrag" :
+				return __( "Touch drag enabled.", $this->plugin_name );
+				break;
+			case "woocas_pullDrag" :
+				return __( "Pull drag enabled.", $this->plugin_name );
+				break;
+			case "woocas_freeDrag" :
+				return __( "Free drag enabled.", $this->plugin_name );
+				break;
+			case "woocas_stagePadding" :
+				return __( "Padding left and right on stage (can see neighbours).", $this->plugin_name );
+				break;
+			case "woocas_autoWidth" :
+				return __( "Auto width", $this->plugin_name );
+				break;
+			case "woocas_startPosition" :
+				return __( "Start position", $this->plugin_name );
+				break;
+			case "woocas_nav" :
+				return __( "Nav", $this->plugin_name );
+				break;
+			case "woocas_navRewind" :
+				return __( "Nav rewind", $this->plugin_name );
+				break;
+			case "woocas_navText_prev" :
+				return __( "Nav previous text button", $this->plugin_name );
+				break;
+			case "woocas_navText_next" :
+				return __( "Nav next text button", $this->plugin_name );
+				break;
+			case "woocas_slideBy" :
+				return __( "Slide By", $this->plugin_name );
+				break;
+			case "woocas_dots" :
+				return __( "Dots navigation", $this->plugin_name );
+				break;
+			case "woocas_autoplay" :
+				return __( "Autoplay", $this->plugin_name );
+				break;
+			case "woocas_autoplayTimeout" :
+				return __( "Autoplay timeout", $this->plugin_name );
+				break;
+			case "woocas_autoplayHoverPause" :
+				return __( "Autoplay pause on over", $this->plugin_name );
 				break;
 			default :
 				return $attribute;
@@ -238,19 +336,116 @@ class Carousel {
 		?>
 	<div id="woocas-admin-tab">
 		<h2 class="nav-tab-wrapper">
-			<a href="#woocas-responsice-tab" class="nav-tab nav-tab-active">Responsive</a>
-			<a href="#general" class="nav-tab">Tab #2</a>
-			<a href="#frag2" class="nav-tab">Tab #3</a>
+			<a href="#woocas-woo-filter" class="nav-tab nav-tab-active"><?php _e( "WooCommerce Filter", $this->plugin_name ) ?></a>
+			<a href="#woocas-responsice-tab" class="nav-tab"><?php _e( "Responsive", $this->plugin_name ) ?></a>
+			<a href="#general" class="nav-tab"><?php _e( "Genral", $this->plugin_name ) ?></a>
 		</h2>
-		<div id="woocas-responsice-tab">
+		<div id="woocas-woo-filter">
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<label for="woocas_cat_filter"><?php _e("Category filter") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Category filter") ?>:</span>
+							</legend>
+							<select name="woocas_cat_filter" id="woocas_cat_filter" style="display: none;" >
+							<?php 
+								$categories = get_categories('taxonomy=product_cat'); 
+								foreach (  $categories as $cat ) { ?>
+								<option value="<?php echo $cat->name ?>"><?php echo $cat->name ?></option>
+							<?php } ?>
+							</select>
+							<input id="woocas_filter_categories" name="woocas_filter_categories" size="50" value="<?php echo $this->woocas_filter_categories ?>">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="woocas_filter_show"><?php _e("Show") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Show") ?>:</span>
+							</legend>
+							<select name="woocas_filter_show" id="woocas_show_filter" >
+								<option value="" <?php echo ( $this->woocas_filter_show == "" ) ? 'selected="selected"' : ''?> > <?php _e( 'All Products' )?></option>
+								<option value="featured" <?php echo ( $this->woocas_filter_show == "featured" ) ? 'selected="selected"' : ''?> > <?php _e( 'Featured Products' )?></option>
+								<option value="onsale" <?php echo ( $this->woocas_filter_show == "onsale" ) ? 'selected="selected"' : ''?>><?php _e( 'On-sale Products' )?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="woocas_filter_orderby"><?php _e("Order by") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Order by") ?>:</span>
+							</legend>
+							<select name="woocas_filter_orderby" id="woocas_filter_orderby" >
+								<option value="date" <?php echo ( $this->woocas_filter_orderby == "date" ) ? 'selected="selected"' : ''?>><?php _e( 'Date' )?></option>
+								<option value="price" <?php echo ( $this->woocas_filter_orderby == "price" ) ? 'selected="selected"' : ''?>><?php _e( 'Price' )?></option>
+								<option value="rand" <?php echo ( $this->woocas_filter_orderby == "rand" ) ? 'selected="selected"' : ''?>><?php _e( 'Random' )?></option>
+								<option value="sales" <?php echo ( $this->woocas_filter_orderby == "sales" ) ? 'selected="selected"' : ''?>><?php _e( 'Sales' )?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="woocas_filter_order"><?php _e("Order") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Order") ?>:</span>
+							</legend>
+							<select name="woocas_filter_order" id="woocas_filter_order" >
+								<option value="asc" <?php echo ( $this->woocas_filter_order == "asc" ) ? 'selected="selected"' : ''?>><?php _e( 'ASC' )?></option>
+								<option value="desc" <?php echo ( $this->woocas_filter_order == "desc" ) ? 'selected="selected"' : ''?>><?php _e( 'DESC' )?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="woocas_filter_hide_free"><?php _e("Hide free products") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Hide free products") ?>:</span>
+							</legend>
+							<select name="woocas_filter_hide_free" id="woocas_filter_hide_free" >
+								<option value="0" <?php echo ( $this->woocas_filter_hide_free == "0" ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
+								<option value="1" <?php echo ( $this->woocas_filter_hide_free == "1" ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="woocas_filter_show_hidden"><?php _e("Show hidden products") ?>:</label>
+						</th>
+						<td>
+							<legend class="screen-reader-text">
+								<span><?php _e("Show hidden products") ?>:</span>
+							</legend>
+							<select name="woocas_filter_show_hidden" id="woocas_filter_show_hidden" >
+								<option value="0" <?php echo ( $this->woocas_filter_show_hidden == "0" ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
+								<option value="1" <?php echo ( $this->woocas_filter_show_hidden == "1" ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="hidden" id="woocas-responsice-tab">
 			<table class="form-table woocas-responsice-table">
 				<tbody>
 					<tr>
 						<td>
-							<label>Options applicate to resolution upper :</label>
+							<label><?php _e( "Options applicate to resolution upper", $this->plugin_name ) ?>:</label>
 							<input type="text" class="small-text" id="woocas-add-breakpoint-value" value="" />
 							px
-							<input type="button" class="button button-small" value="Add breakpoint" id="woocas-add-breakpoint" />
+							<input type="button" class="button button-small" value="<?php _e('Add breakpoint') ?>" id="woocas-add-breakpoint" />
 						</td>
 						<td></td>
 					</tr>
@@ -258,19 +453,19 @@ class Carousel {
 			</table>
 			<div id="woocas-responsive-base" style="display: none;">
 				<h3>
-					Resolution >=
+					<?php _e( "Resolution", $this->plugin_name ) ?> &gt;=
 					<span></span>
 					px
 					<a href="#" class="dashicons dashicons-no woocas-responsive-delete"></a>
 				</h3>
 				<div>
 					<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="" />
-					Add option: <select class="woocas-responsive-base-attributes-select">
+					<label style="font-size: 14px"><?php _e( "Add option", $this->plugin_name ) ?>:</label> <select class="woocas-responsive-base-attributes-select">
 	            <?php foreach ( $this->woocas_responsive_attr_avaible as $index => $value ) { ?>
 	              <option value="<?php echo $value ?>"><?php echo $this->get_label($value) ?></option>
 	            <?php }?>
 	            </select>
-					<a href="#" class="woocas-responsive-add-attribute ">Add</a>
+					<a href="#" class="button-secondary woocas-responsive-add-attribute ">__( "Add" )</a>
 					<table class="form-table">
 						<tbody>
 						</tbody>
@@ -281,25 +476,25 @@ class Carousel {
 			<?php foreach ( $this->attrs_array["woocas_responsive"] as $index => $value ) { ?>
 				<div id="woocas-responsive-<?php echo $index ?>">
 					<h3>
-						Resolution &gt;=
+						<?php _e( "Resolution", $this->plugin_name ) ?> &gt;=
 						<span><?php echo $index ?></span>
 						px
 						<a href="<?php echo $index ?>" class="dashicons dashicons-no woocas-responsive-delete"></a>
 					</h3>
 					<div>
 						<input type="hidden" name="breakpoint-id[]" class="breakpoint-id" value="<?php echo $index ?>">
-						Add option: <select class="woocas-responsive-attributes-select"></select>
-						<a href="<?php echo $index ?>" class="woocas-responsive-add-attribute ">Add</a>
+						<label  style="font-size: 14px"><?php _e( "Add option", $this->plugin_name ) ?>:</label> <select class="woocas-responsive-attributes-select"></select>
+						<a href="<?php echo $index ?>" class="button-secondary woocas-responsive-add-attribute "><?php _e( "Add" ) ?></a>
 						<table class="form-table">
 							<tbody>
 								<?php foreach ( $value as $index_attr => $value_attr ) { ?>
-								<tr class="<?php echo "woocas_".$index_attr ?>">
+								<tr class="<?php echo str_replace("'", "", $index_attr) ?>">
 									<th scope="row">
-										<label for="<?php echo "woocas_".$index_attr ?>"><?php echo $index_attr ?>:</label>
+										<label for="<?php echo str_replace("'", "", $index_attr) ?>"><?php echo $this->get_label(str_replace("'", "", $index_attr)) ?>:</label>
 									</th>
 									<td>
 										<legend class="screen-reader-text">
-											<span>Items :</span>
+											<span><?php echo $this->get_label(str_replace("'", "", $index_attr)) ?>:</span>
 										</legend>
 										<input type="text" class="" name="responsive[<?php echo $index ?>][<?php echo $index_attr ?>]" value="<?php echo $value_attr ?>">
 									</td>
@@ -315,290 +510,81 @@ class Carousel {
 		</div>
 
 		<div class="hidden" id="general">
+			<div id="woocas_advance_options">
+				<h3><?php _e("Advanced Options") ?></h3>
+				<div>
+					<table class="form-table">
+						<tbody>
+							<?php foreach ( $this->woocas_advanced_options as $attr ) {
+								echo $this -> get_attribute_html($attr);
+							} ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 			<table class="form-table">
 				<tbody>
-					<tr class="woocas_items">
-						<th scope="row">
-							<label for="woocas_items"><?php _e( 'Items' ) ?>:</label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Items' ) ?> :</span>
-							</legend>
-							<input type="text" class="width-50" name="woocas_items" value="<?php echo $this->attrs_array['woocas_items'] ?>" />
-							<span class="description"><?php _e( 'The number of items you want to see on the screen.' ) ?></span>
-						</td>
-					</tr>
-					<tr class="woocas_margin">
-						<th scope="row">
-							<label for="woocas_margin"><?php _e( 'Margin' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span>><?php _e( 'Items Margin Right' ) ?>: </span>
-							</legend>
-							<input type="text" class="width-50" name="woocas_margin" value="<?php echo $this->attrs_array['woocas_margin'] ?>" />
-							<span class="description"><?php _e( 'Margin-right in px on item.' ) ?></span>
-						</td>
-					</tr>
-					<tr class="woocas_loop">
-						<th scope="row">
-							<label for="woocas_loop"><?php _e( 'Loop' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Infinity Loop' ) ?>: </span>
-							</legend>
-							<select name="woocas_loop">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_loop'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_loop'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Duplicate last and first items to get loop illusion.' )?></span>
-						</td>
-					</tr>
-					<tr class="woocas_center">
-						<th scope="row">
-							<label for="woocas_center"><?php _e( 'Center' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Center Item' ) ?>: </span>
-							</legend>
-							<select name="woocas_center">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_center'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_center'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Works well with even an odd number of items.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_mouseDrag"><?php _e( 'Mouse Drag' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Mouse Drag' ) ?>: </span>
-							</legend>
-							<select name="woocas_mouseDrag">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_mouseDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_mouseDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Mouse drag enabled.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_touchDrag"><?php _e( 'Touch Drag' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Touch Drag' ) ?>: </span>
-							</legend>
-							<select name="woocas_touchDrag">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_touchDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_touchDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Touch drag enabled.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_pullDrag"><?php _e( 'Pull Drag' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Pull Drag' ) ?>: </span>
-							</legend>
-							<select name="woocas_pullDrag">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_pullDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_pullDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Stage pull to edge.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_freeDrag"><?php _e( 'Free Drag' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Free Drag' ) ?>: </span>
-							</legend>
-							<select name="woocas_freeDrag">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_freeDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_freeDrag'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Item pull to edge.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_stagePadding"><?php _e( 'Stage Padding' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Stage Padding' ) ?>: </span>
-							</legend>
-							<input type="text" class="width-50" name="woocas_stagePadding" value="<?php echo $this->attrs_array['woocas_stagePadding'] ?>" />
-							<span class="description"><?php _e( 'Padding left and right on stage (can see neighbours).' ) ?></span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_autoWidth"><?php _e( 'Auto Width' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Auto Width' ) ?>: </span>
-							</legend>
-							<select name="woocas_autoWidth">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_autoWidth'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_autoWidth'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Set non grid content. Try using width style on divs.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_startPosition"><?php _e( 'Start position' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Start position' ) ?>: </span>
-							</legend>
-							<input type="text" class="width-50" name="woocas_startPosition" value="<?php echo $this->attrs_array['woocas_startPosition'] ?>" />
-							<span class="description"><?php _e( 'Item number to start' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_nav"><?php _e( 'Navigation Buttons' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Navigation Buttons' ) ?>: </span>
-							</legend>
-							<select name="woocas_nav">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_nav'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_nav'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Show next/prev buttons.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_navRewind"><?php _e( 'Navigation Button Loop' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Navigation Button Loop' ) ?>: </span>
-							</legend>
-							<select name="woocas_navRewind">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_navRewind'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_navRewind'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Go to first/last.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_navText_prev"><?php _e( 'Label Previous Button' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Label Previous Button' ) ?>: </span>
-							</legend>
-							<input type="text" class="woocas_navText_prev" name="woocas_navText_prev" value="<?php echo $this->attrs_array['woocas_navText_prev'] ?>" />
-							<span class="description"><?php _e( 'If empty, default value is &#x27;next&#x27;' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_navText_next"><?php _e( 'Label Next Button' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Label Next Button' ) ?>: </span>
-							</legend>
-							<input type="text" class="woocas_navText_next" name="woocas_navText_next" value="<?php echo $this->attrs_array['woocas_navText_next'] ?>" />
-							<span class="description"><?php _e( 'If empty, default value is &#x27;prev&#x27;' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_slideBy"><?php _e( 'Slide by' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Slide by' ) ?>: </span>
-							</legend>
-							<input type="text" class="width-50 woocas_slideBy" name="woocas_slideBy" value="<?php echo $this->attrs_array['woocas_slideBy'] ?>" />
-							<span class="description"><?php _e( 'Navigation slide by x. "Page" string can be set to slide by page.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_dots"><?php _e( 'Show dots navigation' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Show dots navigation' ) ?>: </span>
-							</legend>
-							<select name="woocas_dots">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_dots'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_dots'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_autoplay"><?php _e( 'Autoplay' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Autoplay' ) ?>: </span>
-							</legend>
-							<select name="woocas_autoplay">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_autoplay'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_autoplay'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_autoplayTimeout"><?php _e( 'Autoplay interval timeout' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Autoplay interval timeout' ) ?>: </span>
-							</legend>
-							<input type="text" class="width-50 woocas_autoplayTimeout" name="woocas_autoplayTimeout" value="<?php echo $this->attrs_array['woocas_autoplayTimeout'] ?>" />
-							<span class="description"><?php _e( 'In milliseconds.' ) ?> </span>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="woocas_autoplayHoverPause"><?php _e( 'Autoplay pause' ) ?>: </label>
-						</th>
-						<td>
-							<legend class="screen-reader-text">
-								<span><?php _e( 'Autoplay pause' ) ?>: </span>
-							</legend>
-							<select name="woocas_autoplayHoverPause">
-								<option value="0" <?php echo ( !$this->attrs_array['woocas_autoplayHoverPause'] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
-								<option value="1" <?php echo ( $this->attrs_array['woocas_autoplayHoverPause'] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
-							</select>
-							<span class="description"><?php _e( 'Pause on mouse hover.' ) ?> </span>
-						</td>
-					</tr>
+					<?php foreach ( $this->woocas_standard_options as $attr ) {
+						echo $this -> get_attribute_html($attr);
+					} ?>
 				</tbody>
 			</table>
 		</div>
-		<div class="hidden" id="frag2">
-			<p>#2 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-		</div>
 	</div>
 
+	<?php
+	}
+
+	/**
+	*	
+	*
+	*/
+	public function save($post_id, $post) {
+		$default = new Carousel ();
+		$data = array ();
+		foreach ( $default->attrs_array as $attribute_name => $value ) {
+			if (isset ( $_POST [$attribute_name] )) {
+				if (sanitize_text_field ( $post [$attribute_name] ) != $default->attrs_array [$attribute_name])
+					$data [$attribute_name] = sanitize_text_field ( $post [$attribute_name] );
+			}
+		}
+		
+		foreach ( $post ['responsive'] as $width =>  $attributes ) {
+			$data ['woocas_responsive'][$width] = array();
+			foreach ( $attributes as $attribute => $value ) {
+				$data ['woocas_responsive'][sanitize_text_field($width)][sanitize_text_field($attribute)] =sanitize_text_field($value);
+			}
+		}
+		ksort($data ['woocas_responsive']);
+		reset($data ['woocas_responsive']);
+		update_post_meta ( $post_id, 'woocas_data', $data );
+	}
+
+	public function get_woocas_js_arg() {
+		return implode ( ",", $this->woocas_js_arg );
+	}
+
+	private function get_attribute_html( $attr ) {
+	?>
+		<tr class="<?php echo $attr ?>">
+			<th scope="row">
+				<label for="<?php echo $attr ?>"><?php echo $this->get_label($attr) ?>: </label>
+			</th>
+			<td>
+				<legend class="screen-reader-text">
+					<span>><?php echo $this->get_label($attr) ?>: </span>
+				</legend>
+				<?php if (is_bool($this->attrs_array [$attr])) { ?>
+				<select name="<?php echo $attr ?>">
+					<option value="0" <?php echo ( !$this->attrs_array[$attr] ) ? 'selected="selected"' : ''?>><?php _e( 'No' )?></option>
+					<option value="1" <?php echo ( $this->attrs_array[$attr] ) ? 'selected="selected"' : ''?>><?php _e( 'Yes' )?></option>
+				</select>
+				<?php } else { ?>
+				<input type="text" class="width-50" name="<?php echo $attr ?>" value="<?php echo $this->attrs_array[$attr] ?>" />
+				<?php } ?>
+				<span class="description"><?php echo $this->get_description($attr) ?></span>
+			</td>
+		</tr>
 	<?php
 	}
 }

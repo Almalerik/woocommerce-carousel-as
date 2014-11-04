@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Carousel AS\n"
 "POT-Creation-Date: 2014-11-01 20:43+0100\n"
-"PO-Revision-Date: 2014-11-01 20:43+0100\n"
+"PO-Revision-Date: 2014-11-01 23:16+0100\n"
 "Last-Translator: Almalerik <almalerik@gmail.com>\n"
 "Language-Team: \n"
 "Language: it\n"
@@ -18,11 +18,11 @@ msgstr ""
 
 #: ../admin/class-carousel.php:167
 msgid "Items"
-msgstr "Numero immagini"
+msgstr ""
 
 #: ../admin/class-carousel.php:170
 msgid "Margin right"
-msgstr "Margine destro"
+msgstr ""
 
 #: ../admin/class-carousel.php:173
 msgid "Loop"
@@ -30,7 +30,7 @@ msgstr ""
 
 #: ../admin/class-carousel.php:176
 msgid "Center"
-msgstr "Centro"
+msgstr ""
 
 #: ../admin/class-carousel.php:179
 msgid "Mouse drag"
@@ -130,7 +130,7 @@ msgstr ""
 #: ../admin/class-carousel.php:498 ../admin/class-carousel.php:549
 #: ../admin/class-carousel.php:563 ../admin/class-carousel.php:589
 msgid "Yes"
-msgstr "Si"
+msgstr ""
 
 #: ../admin/class-carousel.php:356
 msgid "Duplicate last and first items to get loop illusion."
@@ -242,7 +242,7 @@ msgstr ""
 
 #: ../admin/class-carousel.php:576
 msgid "In milliseconds."
-msgstr "In millisecondi"
+msgstr ""
 
 #: ../admin/class-carousel.php:581 ../admin/class-carousel.php:585
 msgid "Autoplay pause"
@@ -286,7 +286,7 @@ msgstr ""
 
 #: ../admin/class-woocommerce-carousel-as-admin.php:126
 msgid "All Carousels"
-msgstr "Tutti i caroselli"
+msgstr ""
 
 #: ../admin/class-woocommerce-carousel-as-admin.php:127
 msgid "View Carousel"
@@ -318,4 +318,4 @@ msgstr ""
 
 #: ../admin/class-woocommerce-carousel-as-admin.php:164
 msgid "Date"
-msgstr "Data"
+msgstr ""

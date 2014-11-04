@@ -160,7 +160,11 @@ class Woocommerce_Carousel_AS {
         $this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename , $plugin_admin, 'add_plugin_action_links' );
 
 		$this->loader->add_action( 'init', $plugin_admin, 'woocommerce_carousel_as_type', 0 );
-		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'carousel_meta_box' );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'woocas_carousel_meta_box' );
+		$this->loader->add_filter( 'manage_edit-woocarouselas_columns', $plugin_admin, 'set_custom_edit_carousel_columns' );
+		$this->loader->add_action( 'manage_woocarouselas_posts_custom_column', $plugin_admin, 'custom_carousel_column', 10, 2 );
+		$this->loader->add_action( 'save_post', $plugin_admin, 'save' );
+		add_shortcode( 'woocas', array( $plugin_admin, 'shortcode' ) );
 
 	}
 

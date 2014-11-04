@@ -63,6 +63,7 @@ class Woocommerce_Carousel_AS_Public {
 		 * class.
 		 */
 
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'owl.carousel.2.0.0-beta.2.4/assets/owl.carousel.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woocommerce-carousel-as-public.css', array(), $this->version, 'all' );
 
 	}
@@ -85,7 +86,8 @@ class Woocommerce_Carousel_AS_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'owl.carousel.2.0.0-beta.2.4/owl.carousel.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woocommerce-carousel-as-public.js', array( 'jquery' ), $this->version, false );
 
 	}

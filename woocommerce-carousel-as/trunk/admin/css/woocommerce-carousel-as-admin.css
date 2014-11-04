@@ -7,13 +7,15 @@
  	width: 50px;
  }
 
-#woocas-responsive-accordion h3 {
+#woocas-responsive-accordion h3,
+#woocas_advance_options h3 {
 	background: #dedede;
 	font-weight: bold;
 	text-indent: 15px;
 }
 
-#woocas-responsive-accordion h3 .dashicons-no {
+#woocas-responsive-accordion h3 .dashicons-no,
+#woocas_advance_options h3 .dashicons-no {
 	float: right;
 	margin-right: 10px;
 	padding: 0;
